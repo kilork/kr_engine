@@ -3,13 +3,13 @@ unit Vga;
 interface
 
   procedure ScreenMode(m : word);
-  { устанавливает режим экрана }
+  { ╤Г╤Б╤В╨░╨╜╨░╨▓╨╗╨╕╨▓╨░╨╡╤В ╤А╨╡╨╢╨╕╨╝ ╤Н╨║╤А╨░╨╜╨░ }
   procedure Dot(x, y : integer; c : byte);
-  { рисует точку }
+  { ╤А╨╕╤Б╤Г╨╡╤В ╤В╨╛╤З╨║╤Г }
   procedure Line( x1, y1, x2, y2 : integer; c : byte );
-  { рисует линию }
+  { ╤А╨╕╤Б╤Г╨╡╤В ╨╗╨╕╨╜╨╕╤О }
   function GetDot(x,y : integer) : byte;
-  { определяет цвет точки }
+  { ╨╛╨┐╤А╨╡╨┤╨╡╨╗╤П╨╡╤В ╤Ж╨▓╨╡╤В ╤В╨╛╤З╨║╨╕ }
   procedure LineTo( x, y : integer; c : byte );
 
   procedure MoveTo( x, y : integer );

@@ -1,6 +1,6 @@
 unit Obj_LIB;
 
-{ ¨­¨æ¨ «¨§ æ¨ï ¨ ®¡à ¡®âª  ®¡ê¥ªâ®¢ áæ¥­ë }
+{ Ğ¸Ğ½Ğ¸Ñ†Ğ¸Ğ°Ğ»Ğ¸Ğ·Ğ°Ñ†Ğ¸Ñ Ğ¸ Ğ¾Ğ±Ñ€Ğ°Ğ±Ğ¾Ñ‚ĞºĞ° Ğ¾Ğ±ÑŠĞµĞºÑ‚Ğ¾Ğ² ÑÑ†ĞµĞ½Ñ‹ }
 
 {*----------------*}
 {*}  interface   {*}
@@ -18,7 +18,7 @@ const N_TPT : word = 0;
       NumOfCoveredClouds : integer = 0;
       LightOn : boolean = false;
 
-{ ******/ š…Š’ - Š€’ˆŠ€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢ - ĞšĞĞ Ğ¢Ğ˜ĞĞšĞ /****** }
 
 procedure Create_TPT( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -27,7 +27,7 @@ procedure DrawMe_TPT( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_TPT( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ ‹‘Š‘’œ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞŸĞ›ĞĞ¡ĞšĞĞ¡Ğ¢Ğ¬ /****** }
 
 procedure Create_Plane( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -36,7 +36,7 @@ procedure DrawMe_Plane( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Plane( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ Š“ƒ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞšĞ Ğ£Ğ“ /****** }
 
 procedure Create_Circle( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -45,7 +45,7 @@ procedure DrawMe_Circle( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Circle( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ „›Œ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ”Ğ«Ğœ /****** }
 
 procedure Create_Fog( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -54,7 +54,7 @@ procedure DrawMe_Fog( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Fog( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ ‹€Š /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ‘Ğ›ĞĞšĞ /****** }
 
 procedure Create_Cloud( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -63,7 +63,7 @@ procedure DrawMe_Cloud( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Cloud( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ ‘‘“‹œŠ€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ¡ĞĞ¡Ğ£Ğ›Ğ¬ĞšĞ /****** }
 
 procedure Create_Sosulka( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -72,7 +72,7 @@ procedure DrawMe_Sosulka( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Sosulka( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ ‡… /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ—Ğ•Ğ Ğ /****** }
 
 procedure Create_Ozero( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -81,7 +81,7 @@ procedure DrawMe_Ozero( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Ozero( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ Š€‹Ÿ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞšĞĞŸĞ›Ğ¯ /****** }
 
 procedure Create_Kaplja( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -90,7 +90,7 @@ procedure DrawMe_Kaplja( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Kaplja( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ Š›˜€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞšĞ Ğ«Ğ¨Ğ /****** }
 
 procedure Create_Top( x0, y0, dx0, dy0, color, color2, z0,
                       x1, y1,
@@ -101,7 +101,7 @@ procedure DrawMe_Top( sprite, x0, y0, dx0, dy0 : Integer );
 procedure SetPhase_Top( sprite, phase0 : Integer );
 
 
-{ ******/ š…Š’› ’ˆ€ „ŒˆŠ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ”ĞĞœĞ˜Ğš /****** }
 
 procedure Create_House( x0, y0, z0 : Integer );
 
@@ -109,7 +109,7 @@ procedure DrawMe_House( sprite, x0, y0, dx0, dy0 : Integer );
 
 procedure SetPhase_House( sprite, phase0 : Integer );
 
-{ ******/ š…Š’› ’ˆ€ ‚–€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ’Ğ¦Ğ /****** }
 
 procedure Create_Ovca( x0, y0, z0 : Integer );
 
@@ -117,7 +117,7 @@ procedure DrawMe_Ovca( sprite, x0, y0, dx0, dy0 : Integer );
 
 procedure SetPhase_Ovca( sprite, phase0 : Integer );
 
-{ ******/ š…Š’› ’ˆ€ ‹€Š‚ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ‘Ğ›ĞĞšĞĞ’ /****** }
 
 procedure Create_Oblakov( x0, y0, z0 : Integer );
 
@@ -125,7 +125,7 @@ procedure DrawMe_Oblakov( sprite, x0, y0, dx0, dy0 : Integer );
 
 procedure SetPhase_Oblakov( sprite, phase0 : Integer );
 
-{ ******/ š…Š’› ’ˆ€ ‘‚…’ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ¡Ğ’Ğ•Ğ¢ /****** }
 
 procedure Create_Light( x0, y0, z0 : Integer );
 
@@ -140,7 +140,7 @@ procedure SetPhase_Light( sprite, phase0 : Integer );
 
 uses Graph, TimerLIB;
 
-{ ******/ š…Š’› ’ˆ€ ‹€Š‚ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ‘Ğ›ĞĞšĞĞ’ /****** }
 
 procedure Create_Oblakov( x0, y0, z0 : Integer );
 
@@ -224,7 +224,7 @@ begin
     end
 end;
 
-{ ******/ š…Š’ - Š€’ˆŠ€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢ - ĞšĞĞ Ğ¢Ğ˜ĞĞšĞ /****** }
 
 procedure Create_TPT( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -287,7 +287,7 @@ begin
     end;
 end;
 
-{ ******/ š…Š’› ’ˆ€ ‘‚…’ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ¡Ğ’Ğ•Ğ¢ /****** }
 
 procedure Create_Light( x0, y0, z0 : Integer );
 
@@ -341,7 +341,7 @@ procedure SetPhase_Light( sprite, phase0 : Integer );
 begin
 end;
 
-{ ******/ š…Š’› ’ˆ€ ‚–€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ’Ğ¦Ğ /****** }
 
 const Ovca_id:integer = -1;
 
@@ -450,7 +450,7 @@ begin
       end
 end;
 
-{ ******/ š…Š’› ’ˆ€ ‹‘Š‘’œ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞŸĞ›ĞĞ¡ĞšĞĞ¡Ğ¢Ğ¬ /****** }
 
 const Fill:integer = 1;
 
@@ -499,7 +499,7 @@ procedure SetPhase_Plane( sprite, phase0 : Integer );
 begin
 end;
 
-{ ******/ š…Š’› ’ˆ€ Š“ƒ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞšĞ Ğ£Ğ“ /****** }
 
 procedure Create_Circle( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -565,7 +565,7 @@ begin
 end;
 
 
-{ ******/ š…Š’› ’ˆ€ „›Œ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ”Ğ«Ğœ /****** }
 
 procedure Create_Fog( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -647,7 +647,7 @@ begin
 end;
 
 
-{ ******/ š…Š’› ’ˆ€ ‹€Š /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ‘Ğ›ĞĞšĞ /****** }
 
 procedure Create_Cloud( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -741,7 +741,7 @@ begin
     end;
 end;
 
-{ ******/ š…Š’› ’ˆ€ ‘‘“‹œŠ€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ¡ĞĞ¡Ğ£Ğ›Ğ¬ĞšĞ /****** }
 
 const Sosulka : integer = -1;
       Kaplja  : integer = -1;
@@ -839,7 +839,7 @@ begin
     end;
 end;
 
-{ ******/ š…Š’› ’ˆ€ ‡… /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞĞ—Ğ•Ğ Ğ /****** }
 
 procedure Create_Ozero( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -857,7 +857,7 @@ begin
 end;
 
 
-{ ******/ š…Š’› ’ˆ€ Š€‹Ÿ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞšĞĞŸĞ›Ğ¯ /****** }
 
 procedure Create_Kaplja( x0, y0, dx0, dy0, color, color2, z0 : Integer );
 
@@ -941,7 +941,7 @@ begin
 end;
 
 
-{ ******/ š…Š’› ’ˆ€ Š›˜€ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ ĞšĞ Ğ«Ğ¨Ğ /****** }
 
 procedure Create_Top( x0, y0, dx0, dy0, color, color2, z0,
                       x1, y1,
@@ -1006,7 +1006,7 @@ begin
 end;
 
 
-{ ******/ š…Š’› ’ˆ€ „ŒˆŠ /****** }
+{ ******/ ĞĞ‘ĞªĞ•ĞšĞ¢Ğ« Ğ¢Ğ˜ĞŸĞ Ğ”ĞĞœĞ˜Ğš /****** }
 
 procedure Create_House( x0, y0, z0 : Integer );
 

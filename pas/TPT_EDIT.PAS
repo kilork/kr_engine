@@ -83,7 +83,7 @@ begin
                  for J := 0 to 63 do
                    Pic^[ J, I ] := GetDot( I+m_x, J+m_y );
                ScreenMode( 3 );
-               WriteLn( 'Ç¢•§®‚• ®¨Ô ·ÆÂ‡†≠Ô•¨Æ£Æ ‰†©´†:' );
+               WriteLn( '–í–≤–µ–¥–∏—Ç–µ –∏–º—è —Å–æ—Ö—Ä–∞–Ω—è–µ–º–æ–≥–æ —Ñ–∞–π–ª–∞:' );
                ReadLn( Name );
                ScreenMode( $13 );
                InitMainScreen;
@@ -95,7 +95,7 @@ begin
                Line( 80, 190, 100, 190, color );
                Line( 80, 195, 100, 195, color );
                ScreenMode( 3 );
-               WriteLn( 'Ç¢•§®‚• ®¨Ô ß†£‡„¶†•¨Æ£Æ ‰†©´†:' );
+               WriteLn( '–í–≤–µ–¥–∏—Ç–µ –∏–º—è –∑–∞–≥—Ä—É–∂–∞–µ–º–æ–≥–æ —Ñ–∞–π–ª–∞:' );
                ReadLn( Name );
                ScreenMode( $13 );
                InitMainScreen;
