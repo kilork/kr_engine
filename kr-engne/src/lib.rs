@@ -1,4 +1,5 @@
 mod utils;
+mod vga;
 
 use std::convert::TryInto;
 use wasm_bindgen::prelude::*;
