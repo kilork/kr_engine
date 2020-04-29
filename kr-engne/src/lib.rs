@@ -26,7 +26,7 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-struct Universum {
+pub struct Universum {
     width: u16,
     height: u16,
     buffer: Vec<u8>,
@@ -64,7 +64,29 @@ impl Universum {
     }
 
     pub fn tick(&mut self) {
-        self.pixel(10, 10, Color::new(0, 0, 0, 255));
+        for i in 0..200 {
+            self.pixel(i, i, Color::new(0, 0, 0, 255));
+        }
+        let side = 10;
+        for k in 0..256 {
+            let x = k % 32;
+            let y = k / 32;
+            for j in y * side..(y + 1) * side {
+                for i in x * side..(x + 1) * side {
+                    let c = k * 3 as usize;
+                    self.pixel(
+                        i as u16,
+                        j as u16,
+                        Color::new(
+                            vga::PALETTE[c],
+                            vga::PALETTE[c + 1],
+                            vga::PALETTE[c + 2],
+                            255,
+                        ),
+                    );
+                }
+            }
+        }
     }
 
     fn pixel(&mut self, x: u16, y: u16, color: Color) {
