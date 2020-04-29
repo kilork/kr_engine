@@ -69,8 +69,8 @@ impl Universum {
         }
         let side = 10;
         for k in 0..256 {
-            let x = k % 32;
-            let y = k / 32;
+            let x = k % 16;
+            let y = k / 16;
             for j in y * side..(y + 1) * side {
                 for i in x * side..(x + 1) * side {
                     let c = k * 3 as usize;
