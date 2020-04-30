@@ -17,6 +17,8 @@ const memoryPtr = universum.buffer();
 const buffer = new Uint8ClampedArray(memory.buffer, memoryPtr, width * height * 4);
 const imageData = new ImageData(buffer, width, height);
 
+universum.init_defaults();
+
 const renderLoop = () => {
     universum.tick();
     draw();
