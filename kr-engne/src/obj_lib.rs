@@ -75,7 +75,7 @@ impl Universum {
             dy: dy0,
             phase: 0,
             old_time: Self::now(),
-            ph_time: vec![3.3, 0.0],
+            ph_time: vec![33.3, 0.0],
             set_phase: Self::set_phase_circle,
             drawme: Self::drawme_circle,
             inme: None,
@@ -141,7 +141,7 @@ impl Universum {
             dy: dy0,
             phase: 0,
             old_time: Self::now(),
-            ph_time: vec![(1 + self.random(5)).into(), 0.0],
+            ph_time: vec![(1 + dx0 + self.random(10)).into(), 0.0],
             set_phase: Self::set_phase_cloud,
             drawme: Self::drawme_cloud,
             inme: None,
@@ -311,5 +311,55 @@ impl Universum {
             (true, _) => self.ovca_dance_r,
         };
         self.draw_tpt(x, y, dx, dy, tpt);
+    }
+
+    pub fn create_oblakov(&mut self, x0: i32, y0: i32, z0: i32) -> usize {
+        let tpt = self.add_tpt(include_bytes!("../img/OBLAKOV.TPT"));
+        let sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: 64,
+            dy: 64,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![50.0, 0.0],
+            set_phase: Self::set_phase_oblakov,
+            drawme: Self::drawme_oblakov,
+            inme: None,
+            extend: vec![self.random(2), tpt as i32],
+        };
+        self.add_to_scene(sprite)
+    }
+
+    fn set_phase_oblakov(&mut self, nscene: usize, _phase: usize) {
+        let mut sprite = &mut self.scene[nscene];
+        let Sprite {
+            x, ref mut extend, ..
+        } = &mut sprite;
+        if extend[0] == 0 {
+            *x -= 1;
+            if *x < 50 {
+                extend[0] = 1;
+            }
+        } else {
+            *x += 1;
+            if *x > 200 {
+                extend[0] = 0;
+            }
+        }
+    }
+
+    fn drawme_oblakov(&self, sprite: &Sprite) {
+        let &Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref extend,
+            ..
+        } = sprite;
+
+        self.draw_tpt(x, y, dx, dy, extend[1] as usize);
     }
 }

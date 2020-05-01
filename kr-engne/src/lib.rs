@@ -59,25 +59,6 @@ pub struct Universum {
     images: Vec<Vec<u8>>,
 }
 
-#[derive(Clone, Copy, Default)]
-struct Color {
-    red: u8,
-    green: u8,
-    blue: u8,
-    alpha: u8,
-}
-
-impl Color {
-    fn new(red: u8, green: u8, blue: u8, alpha: u8) -> Self {
-        Self {
-            red,
-            green,
-            blue,
-            alpha,
-        }
-    }
-}
-
 #[wasm_bindgen]
 impl Universum {
     pub fn new(width: u32, height: u32) -> Self {
@@ -147,11 +128,9 @@ impl Universum {
         }
 
         // logo
-
         self.create_tpt(2, 335, 0, 0, 0, 0, 0);
 
         // ovca
-
         self.ovca_l = self.add_tpt(include_bytes!("../img/OVCA.TPT"));
         self.ovca_r = self.add_tpt_mirror(self.ovca_l);
         self.ovca_dance_l = self.add_tpt(include_bytes!("../img/OVCA_DAN.TPT"));
@@ -161,6 +140,9 @@ impl Universum {
             let ovca_x = 10 + self.random(240);
             self.create_ovca(ovca_x, 100 + ((i + 1) << 4), 32700 + 30 - i);
         }
+
+        // oblakov
+        self.create_oblakov(50, 270, 32500);
 
         self.render_scene();
     }
