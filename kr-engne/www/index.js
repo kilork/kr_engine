@@ -37,8 +37,6 @@ universum.init_defaults();
 
 const renderLoop = () => {
     universum.tick();
-    ctx.fillStyle = 'white';
-    ctx.fillText(universum.num_of_covered_clouds, 100, 100);
     requestAnimationFrame(renderLoop);
 };
 
