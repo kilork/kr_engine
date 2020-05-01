@@ -8,6 +8,7 @@ use graph::{BLUE, GREEN, LIGHT_GRAY, WHITE, YELLOW};
 use rand::{prelude::*, rngs::OsRng};
 use sprite::Sprite;
 use std::{convert::TryInto, mem};
+use vga::PALETTE;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, ImageData};
@@ -51,6 +52,10 @@ pub struct Universum {
     sun_y0: i32,
     pub num_of_covered_clouds: usize,
     light_on: bool,
+    ovca_l: usize,
+    ovca_r: usize,
+    ovca_dance_l: usize,
+    ovca_dance_r: usize,
     images: Vec<Vec<u8>>,
 }
 
@@ -103,6 +108,10 @@ impl Universum {
             rng: OsRng::default(),
             scene: vec![],
             images: vec![],
+            ovca_dance_l: 0,
+            ovca_dance_r: 0,
+            ovca_l: 0,
+            ovca_r: 0,
         }
     }
 
@@ -140,6 +149,18 @@ impl Universum {
         // logo
 
         self.create_tpt(2, 335, 0, 0, 0, 0, 0);
+
+        // ovca
+
+        self.ovca_l = self.add_tpt(include_bytes!("../img/OVCA.TPT"));
+        self.ovca_r = self.add_tpt_mirror(self.ovca_l);
+        self.ovca_dance_l = self.add_tpt(include_bytes!("../img/OVCA_DAN.TPT"));
+        self.ovca_dance_r = self.add_tpt_mirror(self.ovca_dance_l);
+
+        for i in 0..8 {
+            let ovca_x = 10 + self.random(240);
+            self.create_ovca(ovca_x, 100 + ((i + 1) << 4), 32700 + 30 - i);
+        }
 
         self.render_scene();
     }
@@ -187,5 +208,47 @@ impl Universum {
         for sprite in zbuffer.iter().map(|&(i, _)| &self.scene[i]) {
             (sprite.drawme)(self, sprite);
         }
+    }
+
+    pub(crate) fn add_tpt(&mut self, image_buffer: &[u8]) -> usize {
+        let mut data = vec![0; 64 * 64 * 4];
+        for (i, &pixel) in image_buffer.iter().enumerate() {
+            let image_index = i * 4;
+            if pixel == 0 {
+                data[image_index] = 0;
+                data[image_index + 1] = 0;
+                data[image_index + 2] = 0;
+                data[image_index + 3] = 0;
+                continue;
+            }
+            let palette_index = (pixel as usize) * 3;
+            data[image_index] = PALETTE[palette_index];
+            data[image_index + 1] = PALETTE[palette_index + 1];
+            data[image_index + 2] = PALETTE[palette_index + 2];
+            data[image_index + 3] = 255;
+        }
+        let ntpt = self.images.len();
+
+        self.images.push(data);
+        ntpt
+    }
+
+    pub(crate) fn add_tpt_mirror(&mut self, original: usize) -> usize {
+        let original = &self.images[original];
+        let mut data = vec![0; 64 * 64 * 4];
+        for j in 0..64 {
+            for i in 0..64 {
+                let index: usize = (j * 64 + i) << 2;
+                let original_index = (j * 64 + 63 - i) << 2;
+                data[index] = original[original_index];
+                data[index + 1] = original[original_index + 1];
+                data[index + 2] = original[original_index + 2];
+                data[index + 3] = original[original_index + 3];
+            }
+        }
+        let ntpt = self.images.len();
+
+        self.images.push(data);
+        ntpt
     }
 }

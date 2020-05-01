@@ -1,5 +1,6 @@
 use crate::{log, sprite::Sprite, vga::PALETTE, Universum};
 
+use rand::Rng;
 use std::f64;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::{Clamped, JsCast};
@@ -206,26 +207,7 @@ impl Universum {
         color2: u8,
         z0: i32,
     ) -> usize {
-        let mut data = vec![0; 64 * 64 * 4];
-        let image_buffer = include_bytes!("../img/LOGO2.TPT");
-        for (i, &pixel) in image_buffer.iter().enumerate() {
-            let image_index = i * 4;
-            if pixel == 0 {
-                data[image_index] = 0;
-                data[image_index + 1] = 0;
-                data[image_index + 2] = 0;
-                data[image_index + 3] = 0;
-                continue;
-            }
-            let palette_index = (pixel as usize) * 3;
-            data[image_index] = PALETTE[palette_index];
-            data[image_index + 1] = PALETTE[palette_index + 1];
-            data[image_index + 2] = PALETTE[palette_index + 2];
-            data[image_index + 3] = 255;
-        }
-        let ntpt = self.images.len();
-
-        self.images.push(data);
+        let ntpt = self.add_tpt(include_bytes!("../img/LOGO2.TPT"));
 
         let sprite = Sprite {
             x: x0,
@@ -263,35 +245,71 @@ impl Universum {
             ..
         } = sprite;
 
-        let context = &self.context;
+        self.draw_tpt(x, y, dx, dy, extend[3] as usize);
+    }
 
-        let image_data = context
-            .get_image_data(x.into(), y.into(), dx.into(), dy.into())
-            .unwrap();
-        let data = image_data.data();
-        let sprite_data = &self.images[extend[3] as usize];
-        let mut new_data = sprite_data.to_vec();
-        for (i, w) in new_data.chunks_mut(4).enumerate() {
-            if w[3] != 0 {
-                continue;
+    pub fn create_ovca(&mut self, x0: i32, y0: i32, z0: i32) -> usize {
+        let sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: 64,
+            dy: 64,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![self.rng.gen_range(250.0, 500.0)],
+            set_phase: Self::set_phase_ovca,
+            drawme: Self::drawme_ovca,
+            inme: None,
+            extend: vec![self.random(2)],
+        };
+        self.add_to_scene(sprite)
+    }
+
+    fn set_phase_ovca(&mut self, nscene: usize, _phase: usize) {
+        let shift = self.random(3);
+        let mut sprite = &mut self.scene[nscene];
+        let Sprite {
+            x, ref mut extend, ..
+        } = &mut sprite;
+        match (self.light_on, extend[0]) {
+            (false, 0) => {
+                *x -= shift;
+                if *x < 10 {
+                    extend[0] = 1;
+                }
             }
-            let index = i * 4;
-            w[0] = data[index];
-            w[1] = data[index + 1];
-            w[2] = data[index + 2];
-            w[3] = data[index + 3];
+            (false, _) => {
+                *x += shift;
+                if *x > 400 {
+                    extend[0] = 0;
+                }
+            }
+            (true, 0) => {
+                extend[0] = 1;
+            }
+            (true, _) => {
+                extend[0] = 0;
+            }
         }
-        context
-            .put_image_data(
-                &ImageData::new_with_u8_clamped_array_and_sh(
-                    Clamped(&mut new_data),
-                    dx as u32,
-                    dy as u32,
-                )
-                .unwrap(),
-                sprite.x.into(),
-                sprite.y.into(),
-            )
-            .unwrap();
+    }
+
+    fn drawme_ovca(&self, sprite: &Sprite) {
+        let &Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref extend,
+            ..
+        } = sprite;
+
+        let tpt = match (self.light_on, extend[0]) {
+            (false, 0) => self.ovca_l,
+            (false, _) => self.ovca_r,
+            (true, 0) => self.ovca_dance_l,
+            (true, _) => self.ovca_dance_r,
+        };
+        self.draw_tpt(x, y, dx, dy, tpt);
     }
 }

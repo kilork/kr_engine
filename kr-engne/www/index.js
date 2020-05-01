@@ -6,7 +6,7 @@ import {
 const canvas = document.getElementById("canvas");
 
 const ctx = canvas.getContext('2d');
-
+/*
 let rect = canvas.getBoundingClientRect();
 
 const canvas_width = rect.width - 2;
@@ -24,10 +24,10 @@ canvas.style.height = canvas_height + 'px';
 
 const width = canvas.width;
 const height = canvas.height;
-
-const universum = wasm.Universum.new(width, height);
-
 console.log(`canvas: ${width}:${height}`);
+*/
+const universum = wasm.Universum.new(640, 400);
+
 
 // const memoryPtr = universum.buffer();
 // const buffer = new Uint8ClampedArray(memory.buffer, memoryPtr, width * height * 4);
