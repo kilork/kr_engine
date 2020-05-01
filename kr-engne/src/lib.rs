@@ -57,6 +57,10 @@ pub struct Universum {
     ovca_dance_l: usize,
     ovca_dance_r: usize,
     images: Vec<Vec<u8>>,
+    kaplja: usize,
+    kaplja_drop: bool,
+    is_sosulka: bool,
+    sosulka: usize,
 }
 
 #[wasm_bindgen]
@@ -93,6 +97,10 @@ impl Universum {
             ovca_dance_r: 0,
             ovca_l: 0,
             ovca_r: 0,
+            kaplja_drop: false,
+            is_sosulka: true,
+            kaplja: 0,
+            sosulka: 0,
         }
     }
 
@@ -147,7 +155,8 @@ impl Universum {
         self.create_house(300, 200, 32700);
         // light
         self.create_light(350, 253, 32600);
-        // Create_Sosulka( 300, 200, 0, 0 , Blue, Blue, 32600 );
+        // sosulka
+        self.create_sosulka(300, 200, 0, 0, BLUE, BLUE, 32600);
 
         self.render_scene();
     }

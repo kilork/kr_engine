@@ -12,6 +12,8 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::{Clamped, JsCast};
 use web_sys::ImageData;
 
+const GROUND_LEVEL: i32 = 340;
+
 #[wasm_bindgen]
 impl Universum {
     fn add_to_scene(&mut self, sprite: Sprite) -> usize {
@@ -598,5 +600,169 @@ impl Universum {
         } = sprite;
 
         self.draw_tpt(x, y, dx, dy, extend[1] as usize);
+    }
+
+    pub fn create_sosulka(
+        &mut self,
+        x0: i32,
+        y0: i32,
+        dx0: i32,
+        dy0: i32,
+        color: u8,
+        color2: u8,
+        z0: i32,
+    ) -> usize {
+        let sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: dx0,
+            dy: dy0,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![50.0, 50.0, 50.0, 0.0, 150.0, 150.0, 150.0, 0.0],
+            set_phase: Self::set_phase_sosulka,
+            drawme: Self::drawme_sosulka,
+            inme: None,
+            extend: vec![
+                color2 as i32,
+                color as i32,
+                x0,
+                y0,
+                x0 + 5,
+                y0 + 15,
+                x0 + 10,
+                y0,
+                1,
+            ],
+        };
+        self.sosulka = self.add_to_scene(sprite);
+        self.kaplja = self.create_kaplja(x0 + 5, y0 + 15, 3, 3, BLUE, LIGHT_BLUE, z0);
+        self.sosulka
+    }
+
+    fn set_phase_sosulka(&mut self, nscene: usize, _phase: usize) {
+        let mut sprite = &mut self.scene[nscene];
+        let Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref mut extend,
+            ..
+        } = &mut sprite;
+        if self.kaplja_drop && self.is_sosulka {
+            extend[5] -= 1;
+            self.kaplja_drop = false;
+            if extend[5] < *y {
+                extend[5] = *y;
+                self.is_sosulka = false;
+            }
+        } else if !self.is_sosulka {
+            extend[5] += 1;
+            if extend[5] > *y + 15 {
+                extend[5] = *y + 15;
+                self.is_sosulka = true;
+                self.scene[self.kaplja].y = extend[5];
+            }
+        }
+    }
+
+    fn drawme_sosulka(&self, sprite: &Sprite) {
+        Self::drawme_top(self, sprite);
+        let &Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref extend,
+            ..
+        } = sprite;
+        let fill_color = sprite.extend[0];
+        let stroke_color = sprite.extend[1];
+        let fill_color_rgb = self.rgb(fill_color);
+        let stroke_color_rgb = self.rgb(stroke_color);
+
+        let context = &self.context;
+
+        context.set_fill_style(&fill_color_rgb.into());
+        context.set_stroke_style(&stroke_color_rgb.into());
+
+        self.fill_ellipse(170, 340, 150 - extend[5] + y, 20);
+    }
+
+    pub fn create_kaplja(
+        &mut self,
+        x0: i32,
+        y0: i32,
+        dx0: i32,
+        dy0: i32,
+        color: u8,
+        color2: u8,
+        z0: i32,
+    ) -> usize {
+        let sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: dx0,
+            dy: dy0,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![25.0, 0.0],
+            set_phase: Self::set_phase_kaplja,
+            drawme: Self::drawme_kaplja,
+            inme: None,
+            extend: vec![color2 as i32, color as i32, 1, 3],
+        };
+        self.add_to_scene(sprite)
+    }
+
+    fn set_phase_kaplja(&mut self, nscene: usize, _phase: usize) {
+        let sosulka_extend5 = self.scene[self.sosulka].extend[5];
+        let mut sprite = &mut self.scene[nscene];
+        let Sprite { y, .. } = &mut sprite;
+
+        if self.is_sosulka {
+            *y += 5;
+            if *y > GROUND_LEVEL {
+                *y = sosulka_extend5;
+                self.kaplja_drop = true;
+            }
+        } else if !self.kaplja_drop {
+            *y += 5;
+            if *y > GROUND_LEVEL {
+                *y = sosulka_extend5;
+                self.kaplja_drop = true;
+            }
+        }
+    }
+
+    fn drawme_kaplja(&self, sprite: &Sprite) {
+        if !(self.is_sosulka || !self.kaplja_drop) {
+            return;
+        }
+
+        let &Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref extend,
+            ..
+        } = sprite;
+        let fill_color = sprite.extend[0];
+        let stroke_color = sprite.extend[1];
+        let fill_color_rgb = self.rgb(fill_color);
+        let stroke_color_rgb = self.rgb(stroke_color);
+
+        let context = &self.context;
+
+        context.set_fill_style(&fill_color_rgb.into());
+        context.set_stroke_style(&stroke_color_rgb.into());
+
+        self.fill_ellipse(x, y, dx, dy);
+
+        context.stroke();
     }
 }
