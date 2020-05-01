@@ -145,7 +145,8 @@ impl Universum {
         self.create_oblakov(50, 270, 32500);
         // house
         self.create_house(300, 200, 32700);
-        // Create_Light( 350, 253, 32600 );
+        // light
+        self.create_light(350, 253, 32600);
         // Create_Sosulka( 300, 200, 0, 0 , Blue, Blue, 32600 );
 
         self.render_scene();

@@ -561,4 +561,42 @@ impl Universum {
 
         self.fill_ellipse(x, y, dx, dy);
     }
+
+    pub fn create_light(&mut self, x0: i32, y0: i32, z0: i32) -> usize {
+        let tpt = self.add_tpt(include_bytes!("../img/LIGHT2.TPT"));
+        let sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: 64,
+            dy: 64,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![50.0, 0.0],
+            set_phase: Self::set_phase_light,
+            drawme: Self::drawme_light,
+            inme: None,
+            extend: vec![self.random(2), tpt as i32],
+        };
+        self.add_to_scene(sprite)
+    }
+
+    fn set_phase_light(&mut self, _nscene: usize, _phase: usize) {}
+
+    fn drawme_light(&self, sprite: &Sprite) {
+        if !self.light_on {
+            return;
+        }
+
+        let &Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref extend,
+            ..
+        } = sprite;
+
+        self.draw_tpt(x, y, dx, dy, extend[1] as usize);
+    }
 }
