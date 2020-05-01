@@ -18,8 +18,9 @@ web-sys = { version = "0.3", features = [
   'Document',
   'Element',
   'HtmlCanvasElement',
-  'Window',
-  'Performance'
+  'ImageData',
+  'Performance',
+  'Window'
 ]}
 rand = { version = "0.7", features = ["wasm-bindgen"] }
 

@@ -10,7 +10,7 @@ use sprite::Sprite;
 use std::{convert::TryInto, mem};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::CanvasRenderingContext2d;
+use web_sys::{CanvasRenderingContext2d, ImageData};
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -51,6 +51,7 @@ pub struct Universum {
     sun_y0: i32,
     pub num_of_covered_clouds: usize,
     light_on: bool,
+    images: Vec<Vec<u8>>,
 }
 
 #[derive(Clone, Copy, Default)]
@@ -101,6 +102,7 @@ impl Universum {
             context,
             rng: OsRng::default(),
             scene: vec![],
+            images: vec![],
         }
     }
 
@@ -118,10 +120,15 @@ impl Universum {
 
     /// Add default objects to scene
     pub fn init_defaults(&mut self) {
+        // ground
         self.create_plane(0, 100, 639, 399, WHITE, GREEN, 32764, 1);
+        // sky
         self.create_plane(0, 0, 639, 99, BLUE, BLUE, 32767, 1);
+        // sun
         let nscene = self.create_circle(-20, 40, 20, 20, BLUE, YELLOW, 32766);
         self.scene[nscene].x = 50;
+
+        // clouds
         for _ in 0..10 {
             let i = self.rng.gen_range(15, 40);
             let cloud_color = self.random(256) as u8;
@@ -129,6 +136,10 @@ impl Universum {
             let nscene = self.create_cloud(-(i << 3), 30, i, i, LIGHT_GRAY, cloud_color, 32766 - z);
             self.scene[nscene].x = self.random(640);
         }
+
+        // logo
+
+        self.create_tpt(2, 335, 0, 0, 0, 0, 0);
 
         self.render_scene();
     }
