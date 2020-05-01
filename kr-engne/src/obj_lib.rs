@@ -1,4 +1,10 @@
-use crate::{log, sprite::Sprite, vga::PALETTE, Universum};
+use crate::{
+    graph::{BLACK, BLUE, BROWN, LIGHT_BLUE, LIGHT_GRAY, RED},
+    log,
+    sprite::Sprite,
+    vga::PALETTE,
+    Universum,
+};
 
 use rand::Rng;
 use std::f64;
@@ -361,5 +367,198 @@ impl Universum {
         } = sprite;
 
         self.draw_tpt(x, y, dx, dy, extend[1] as usize);
+    }
+
+    pub fn create_house(&mut self, x0: i32, y0: i32, z0: i32) -> usize {
+        self.create_top(
+            x0,
+            y0,
+            0,
+            0,
+            LIGHT_GRAY,
+            BROWN,
+            z0,
+            x0 + 150,
+            y0 - 150,
+            x0 + 300,
+            y0,
+        );
+        self.create_plane(x0 + 40, y0 - 70, x0 + 60, y0, RED, RED, z0 + 1, 1);
+        self.create_plane(x0 + 30, y0 - 80, x0 + 70, y0 - 70, RED, RED, z0 + 1, 1);
+        self.create_plane(x0 + 30, y0 + 1, x0 + 270, y0 + 150, BROWN, BROWN, z0 + 1, 1);
+        self.create_plane(x0 + 20, y0 + 150, x0 + 280, y0 + 160, RED, RED, z0 + 1, 1);
+
+        for i in 0..50 {
+            let nscene = self.create_fog(x0 + 55, y0 - 70, 0, 0, BLACK, LIGHT_GRAY, z0 + 2);
+            self.scene[nscene].phase = self.random(255) as usize;
+        }
+
+        self.create_plane(
+            x0 + 180,
+            y0 + 40,
+            x0 + 250,
+            y0 + 140,
+            RED,
+            LIGHT_GRAY,
+            z0 + 1,
+            4,
+        );
+
+        self.create_plane(x0 + 50, y0 + 50, x0 + 150, y0 + 100, RED, 0, z0 + 1, 1);
+        self.create_plane(
+            x0 + 52,
+            y0 + 52,
+            x0 + 108,
+            y0 + 98,
+            RED,
+            LIGHT_BLUE,
+            z0 + 1,
+            1,
+        );
+        self.create_plane(
+            x0 + 110,
+            y0 + 52,
+            x0 + 148,
+            y0 + 74,
+            RED,
+            LIGHT_BLUE,
+            z0 + 1,
+            1,
+        );
+        self.create_plane(x0 + 110, y0 + 76, x0 + 148, y0 + 98, RED, BLUE, z0 + 1, 1);
+        self.scene.len() - 1
+    }
+
+    fn set_phase_house(&mut self, nscene: usize, _phase: usize) {}
+
+    fn drawme_house(&self, sprite: &Sprite) {}
+
+    pub fn create_top(
+        &mut self,
+        x0: i32,
+        y0: i32,
+        dx0: i32,
+        dy0: i32,
+        color: u8,
+        color2: u8,
+        z0: i32,
+        x1: i32,
+        y1: i32,
+        x2: i32,
+        y2: i32,
+    ) -> usize {
+        let sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: dx0,
+            dy: dy0,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![1000.0, 0.0],
+            set_phase: Self::set_phase_top,
+            drawme: Self::drawme_top,
+            inme: None,
+            extend: vec![color2 as i32, color as i32, x0, y0, x1, y1, x2, y2, 4],
+        };
+        self.add_to_scene(sprite)
+    }
+
+    fn set_phase_top(&mut self, _nscene: usize, _phase: usize) {}
+
+    fn drawme_top(&self, sprite: &Sprite) {
+        let Sprite { ref extend, .. } = sprite;
+        let fill_color = sprite.extend[0];
+        let stroke_color = sprite.extend[1];
+        let fill_color_rgb = self.rgb(fill_color);
+        let stroke_color_rgb = self.rgb(stroke_color);
+
+        let context = &self.context;
+
+        context.set_fill_style(&fill_color_rgb.into());
+        context.set_stroke_style(&stroke_color_rgb.into());
+
+        context.begin_path();
+        context.move_to(extend[2].into(), extend[3].into());
+        context.line_to(extend[4].into(), extend[5].into());
+        context.line_to(extend[6].into(), extend[7].into());
+        context.fill();
+        context.stroke();
+    }
+
+    pub fn create_fog(
+        &mut self,
+        x0: i32,
+        y0: i32,
+        dx0: i32,
+        dy0: i32,
+        color: u8,
+        color2: u8,
+        z0: i32,
+    ) -> usize {
+        let mut sprite = Sprite {
+            x: x0,
+            y: y0,
+            z: z0,
+            dx: dx0,
+            dy: dy0,
+            phase: 0,
+            old_time: Self::now(),
+            ph_time: vec![75.0; 256],
+            set_phase: Self::set_phase_fog,
+            drawme: Self::drawme_fog,
+            inme: None,
+            extend: vec![color2 as i32, color as i32, x0, y0],
+        };
+        sprite.ph_time[255] = 0.0;
+        self.add_to_scene(sprite)
+    }
+
+    fn set_phase_fog(&mut self, nscene: usize, _phase: usize) {
+        let r_3 = self.random(3);
+        let r_2 = self.random(2);
+        let r_10 = self.random(10);
+        let r_8 = self.random(8);
+
+        let mut sprite = &mut self.scene[nscene];
+        let Sprite {
+            x,
+            y,
+            dx,
+            dy,
+            ref mut extend,
+            ..
+        } = &mut sprite;
+        *dx += r_3;
+        *dy += r_2;
+        if *dx > 20 {
+            *dx = 15;
+        }
+        if *dy > 10 {
+            *dy = 8;
+        }
+        *y -= r_10;
+        *x += r_8 - 5;
+        if *y + *dx < 0 {
+            *dx = 1;
+            *dy = 1;
+            *x = extend[2];
+            *y = extend[3];
+        }
+    }
+
+    fn drawme_fog(&self, sprite: &Sprite) {
+        let &Sprite { x, y, dx, dy, .. } = sprite;
+        let fill_color = sprite.extend[0];
+        let stroke_color = sprite.extend[1];
+        let fill_color_rgb = self.rgb(fill_color);
+        let stroke_color_rgb = self.rgb(stroke_color);
+
+        let context = &self.context;
+
+        context.set_fill_style(&fill_color_rgb.into());
+        context.set_stroke_style(&stroke_color_rgb.into());
+
+        self.fill_ellipse(x, y, dx, dy);
     }
 }

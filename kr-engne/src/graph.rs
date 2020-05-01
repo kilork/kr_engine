@@ -3,10 +3,14 @@ use wasm_bindgen::{Clamped, JsCast};
 use web_sys::ImageData;
 
 pub(crate) const BLUE: u8 = 1;
+pub(crate) const BROWN: u8 = 6;
 pub(crate) const GREEN: u8 = 2;
+pub(crate) const LIGHT_BLUE: u8 = 9;
 pub(crate) const LIGHT_GRAY: u8 = 7;
+pub(crate) const RED: u8 = 4;
 pub(crate) const WHITE: u8 = 15;
 pub(crate) const YELLOW: u8 = 14;
+pub(crate) const BLACK: u8 = 0;
 
 impl Universum {
     pub(crate) fn rgb(&self, color_index: i32) -> String {
