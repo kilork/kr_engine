@@ -4,7 +4,7 @@ mod sprite;
 mod utils;
 mod vga;
 
-use graph::{BLUE, GREEN, WHITE, YELLOW};
+use graph::{BLUE, GREEN, LIGHT_GRAY, WHITE, YELLOW};
 use rand::{prelude::*, rngs::OsRng};
 use sprite::Sprite;
 use std::{convert::TryInto, mem};
@@ -49,6 +49,8 @@ pub struct Universum {
     sun: usize,
     sun_x0: i32,
     sun_y0: i32,
+    pub num_of_covered_clouds: usize,
+    light_on: bool,
 }
 
 #[derive(Clone, Copy, Default)]
@@ -89,6 +91,8 @@ impl Universum {
             .unwrap();
 
         Self {
+            num_of_covered_clouds: 0,
+            light_on: false,
             sun: 0,
             sun_x0: 0,
             sun_y0: 0,
@@ -108,12 +112,23 @@ impl Universum {
             .now()
     }
 
+    fn random(&mut self, high: i32) -> i32 {
+        self.rng.gen_range(0, high)
+    }
+
     /// Add default objects to scene
     pub fn init_defaults(&mut self) {
         self.create_plane(0, 100, 639, 399, WHITE, GREEN, 32764, 1);
         self.create_plane(0, 0, 639, 99, BLUE, BLUE, 32767, 1);
         let nscene = self.create_circle(-20, 40, 20, 20, BLUE, YELLOW, 32766);
         self.scene[nscene].x = 50;
+        for _ in 0..10 {
+            let i = self.rng.gen_range(15, 40);
+            let cloud_color = self.random(256) as u8;
+            let z = self.random(5);
+            let nscene = self.create_cloud(-(i << 3), 30, i, i, LIGHT_GRAY, cloud_color, 32766 - z);
+            self.scene[nscene].x = self.random(640);
+        }
 
         self.render_scene();
     }
