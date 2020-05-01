@@ -7,7 +7,7 @@ mod vga;
 use graph::{BLUE, GREEN, WHITE, YELLOW};
 use rand::{prelude::*, rngs::OsRng};
 use sprite::Sprite;
-use std::convert::TryInto;
+use std::{convert::TryInto, mem};
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::CanvasRenderingContext2d;
@@ -28,8 +28,9 @@ pub fn greet() {
     alert("Hello, kr-engne!");
 }
 
-#[wasm_bindgen(js_namespace = console)]
+#[wasm_bindgen]
 extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
     pub fn log(s: &str);
 }
 
@@ -42,12 +43,12 @@ struct ZSprite {
 pub struct Universum {
     width: u32,
     height: u32,
-    buffer: Vec<u8>,
     context: CanvasRenderingContext2d,
     rng: OsRng,
     scene: Vec<Sprite>,
-    zscene: Vec<ZSprite>,
-    nscene: usize,
+    sun: usize,
+    sun_x0: i32,
+    sun_y0: i32,
 }
 
 #[derive(Clone, Copy, Default)]
@@ -73,7 +74,6 @@ impl Color {
 impl Universum {
     pub fn new(width: u32, height: u32) -> Self {
         utils::set_panic_hook();
-        let buffer = vec![0; ((width * height) as usize) << 2];
         let document = web_sys::window().unwrap().document().unwrap();
         let canvas = document.get_element_by_id("canvas").unwrap();
         let canvas: web_sys::HtmlCanvasElement = canvas
@@ -89,14 +89,14 @@ impl Universum {
             .unwrap();
 
         Self {
+            sun: 0,
+            sun_x0: 0,
+            sun_y0: 0,
             width,
             height,
-            buffer,
             context,
             rng: OsRng::default(),
             scene: vec![],
-            zscene: vec![],
-            nscene: 0,
         }
     }
 
@@ -112,50 +112,54 @@ impl Universum {
     pub fn init_defaults(&mut self) {
         self.create_plane(0, 100, 639, 399, WHITE, GREEN, 32764, 1);
         self.create_plane(0, 0, 639, 99, BLUE, BLUE, 32767, 1);
-        // self.create_circle(-20, 40, 20, 20, BLUE, YELLOW, 32766);
+        let nscene = self.create_circle(-20, 40, 20, 20, BLUE, YELLOW, 32766);
+        self.scene[nscene].x = 50;
+
+        self.render_scene();
     }
 
     pub fn tick(&mut self) {
-        for i in 0..200 {
-            self.pixel(i, i, Color::new(0, 0, 0, 255));
-        }
-        let mut rng = OsRng::default();
-        for _ in 0..10000 {
-            let x: u32 = rng.gen_range(0, 640);
-            let y: u32 = rng.gen_range(0, 480);
-            self.pixel(x, y, Color::new(0, 0, 0, 255));
-        }
-        let side = 10;
-        for k in 0..256 {
-            let x = k % 16;
-            let y = k / 16;
-            for j in y * side..(y + 1) * side {
-                for i in x * side..(x + 1) * side {
-                    let c = k * 3 as usize;
-                    self.pixel(
-                        i as u32,
-                        j as u32,
-                        Color::new(
-                            vga::PALETTE[c],
-                            vga::PALETTE[c + 1],
-                            vga::PALETTE[c + 2],
-                            255,
-                        ),
-                    );
+        let new_time = Self::now();
+
+        let mut need_to_redraw = false;
+
+        for nscene in 0..self.scene.len() {
+            let sprite = &self.scene[nscene];
+            let mut t = sprite.phase;
+            if sprite.ph_time[t] < new_time - sprite.old_time {
+                t += 1;
+                if t == sprite.ph_time.len() || sprite.ph_time[t] == 0.0 {
+                    t = 0;
                 }
+
+                (sprite.set_phase)(self, nscene, t);
+
+                let sprite = &mut self.scene[nscene];
+                sprite.phase = t;
+                sprite.old_time = new_time;
+                need_to_redraw = true;
             }
         }
+
+        if need_to_redraw {
+            self.context
+                .clear_rect(0.0, 0.0, self.width.into(), self.height.into());
+
+            self.render_scene();
+        }
     }
 
-    fn pixel(&mut self, x: u32, y: u32, color: Color) {
-        let index = ((y * self.width + x) as usize) << 2;
-        self.buffer[index] = color.red;
-        self.buffer[index + 1] = color.green;
-        self.buffer[index + 2] = color.blue;
-        self.buffer[index + 3] = color.alpha;
-    }
+    fn render_scene(&mut self) {
+        let mut zbuffer: Vec<_> = self
+            .scene
+            .iter()
+            .enumerate()
+            .map(|(i, s)| (i, s.z))
+            .collect();
+        zbuffer.sort_by(|a, b| a.1.cmp(&b.1).reverse());
 
-    pub fn buffer(&self) -> *const u8 {
-        self.buffer.as_ptr()
+        for sprite in zbuffer.iter().map(|&(i, _)| &self.scene[i]) {
+            (sprite.drawme)(self, sprite);
+        }
     }
 }
