@@ -1,16 +1,11 @@
 use crate::{
     graph::{BLACK, BLUE, BROWN, LIGHT_BLUE, LIGHT_GRAY, RED},
-    log,
     sprite::Sprite,
-    vga::PALETTE,
     Universum,
 };
 
 use rand::Rng;
-use std::f64;
 use wasm_bindgen::prelude::*;
-use wasm_bindgen::{Clamped, JsCast};
-use web_sys::ImageData;
 
 const GROUND_LEVEL: i32 = 340;
 
@@ -209,8 +204,8 @@ impl Universum {
         &mut self,
         x0: i32,
         y0: i32,
-        dx0: i32,
-        dy0: i32,
+        _dx0: i32,
+        _dy0: i32,
         color: u8,
         color2: u8,
         z0: i32,
@@ -390,7 +385,7 @@ impl Universum {
         self.create_plane(x0 + 30, y0 + 1, x0 + 270, y0 + 150, BROWN, BROWN, z0 + 1, 1);
         self.create_plane(x0 + 20, y0 + 150, x0 + 280, y0 + 160, RED, RED, z0 + 1, 1);
 
-        for i in 0..50 {
+        for _i in 0..50 {
             let nscene = self.create_fog(x0 + 55, y0 - 70, 0, 0, BLACK, LIGHT_GRAY, z0 + 2);
             self.scene[nscene].phase = self.random(255) as usize;
         }
@@ -430,10 +425,6 @@ impl Universum {
         self.create_plane(x0 + 110, y0 + 76, x0 + 148, y0 + 98, RED, BLUE, z0 + 1, 1);
         self.scene.len() - 1
     }
-
-    fn set_phase_house(&mut self, nscene: usize, _phase: usize) {}
-
-    fn drawme_house(&self, sprite: &Sprite) {}
 
     pub fn create_top(
         &mut self,
@@ -644,12 +635,7 @@ impl Universum {
     fn set_phase_sosulka(&mut self, nscene: usize, _phase: usize) {
         let mut sprite = &mut self.scene[nscene];
         let Sprite {
-            x,
-            y,
-            dx,
-            dy,
-            ref mut extend,
-            ..
+            y, ref mut extend, ..
         } = &mut sprite;
         if self.kaplja_drop && self.is_sosulka {
             extend[5] -= 1;
@@ -670,14 +656,7 @@ impl Universum {
 
     fn drawme_sosulka(&self, sprite: &Sprite) {
         Self::drawme_top(self, sprite);
-        let &Sprite {
-            x,
-            y,
-            dx,
-            dy,
-            ref extend,
-            ..
-        } = sprite;
+        let &Sprite { y, ref extend, .. } = sprite;
         let fill_color = sprite.extend[0];
         let stroke_color = sprite.extend[1];
         let fill_color_rgb = self.rgb(fill_color);
@@ -743,14 +722,7 @@ impl Universum {
             return;
         }
 
-        let &Sprite {
-            x,
-            y,
-            dx,
-            dy,
-            ref extend,
-            ..
-        } = sprite;
+        let &Sprite { x, y, dx, dy, .. } = sprite;
         let fill_color = sprite.extend[0];
         let stroke_color = sprite.extend[1];
         let fill_color_rgb = self.rgb(fill_color);

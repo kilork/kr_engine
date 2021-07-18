@@ -7,11 +7,10 @@ mod vga;
 use graph::{BLUE, GREEN, LIGHT_GRAY, WHITE, YELLOW};
 use rand::{prelude::*, rngs::OsRng};
 use sprite::Sprite;
-use std::{convert::TryInto, mem};
 use vga::PALETTE;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
-use web_sys::{CanvasRenderingContext2d, ImageData};
+use web_sys::CanvasRenderingContext2d;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -33,11 +32,6 @@ pub fn greet() {
 extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     pub fn log(s: &str);
-}
-
-struct ZSprite {
-    i: usize,
-    z: u16,
 }
 
 #[wasm_bindgen]
@@ -187,8 +181,11 @@ impl Universum {
         if need_to_redraw {
             self.context
                 .clear_rect(0.0, 0.0, self.width.into(), self.height.into());
+            self.context.translate(0.5, 0.5).unwrap();
 
             self.render_scene();
+
+            self.context.translate(-0.5, -0.5).unwrap();
         }
     }
 

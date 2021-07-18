@@ -1,5 +1,5 @@
 use crate::{vga::PALETTE, Universum};
-use wasm_bindgen::{Clamped, JsCast};
+use wasm_bindgen::Clamped;
 use web_sys::ImageData;
 
 pub(crate) const BLUE: u8 = 1;

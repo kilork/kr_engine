@@ -16,14 +16,20 @@
     }
 
     #canvas {
-      border: 1px black solid;
+      border: 0px;
+      image-rendering: optimizeSpeed;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: -o-crisp-edges;
+      image-rendering: crisp-edges;
+      -ms-interpolation-mode: nearest-neighbor;
     }
   </style>
 </head>
 
 <body>
   <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
-  <canvas id="canvas" width="640" height="400"/>
+  <canvas id="canvas" width="640" height="400" />
   <script src="./bootstrap.js"></script>
 </body>
 
