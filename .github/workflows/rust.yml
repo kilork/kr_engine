@@ -36,5 +36,6 @@ jobs:
         branch: master
         folder: kr-engne/www/dist
         repository-name: kilork/kilork.github.io
+        token: ${{ secrets.PAT }}
         target-folder: kr-engne
         clean: true
