@@ -19,9 +19,9 @@ jobs:
     - uses: jetli/wasm-pack-action@v0.3.0
       with:
         # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
-        version: 'latest'
+        version: 'v0.10.0'
     - name: Change directory to kr_engne
-      run: cd kr_engne || exit 1
+      run: cd kr-engne || exit 1
     - name: Build
       run: cargo build --verbose
     - name: Run tests
