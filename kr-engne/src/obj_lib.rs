@@ -702,13 +702,7 @@ impl Universum {
         let mut sprite = &mut self.scene[nscene];
         let Sprite { y, .. } = &mut sprite;
 
-        if self.is_sosulka {
-            *y += 5;
-            if *y > GROUND_LEVEL {
-                *y = sosulka_extend5;
-                self.kaplja_drop = true;
-            }
-        } else if !self.kaplja_drop {
+        if self.is_sosulka || !self.kaplja_drop {
             *y += 5;
             if *y > GROUND_LEVEL {
                 *y = sosulka_extend5;
@@ -718,7 +712,7 @@ impl Universum {
     }
 
     fn drawme_kaplja(&self, sprite: &Sprite) {
-        if !(self.is_sosulka || !self.kaplja_drop) {
+        if !self.is_sosulka && self.kaplja_drop {
             return;
         }
 

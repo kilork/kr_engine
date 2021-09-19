@@ -97,7 +97,7 @@ impl Universum {
         context
             .put_image_data(
                 &ImageData::new_with_u8_clamped_array_and_sh(
-                    Clamped(&mut new_data),
+                    Clamped(&new_data),
                     dx as u32,
                     dy as u32,
                 )
