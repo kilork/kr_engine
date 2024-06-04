@@ -12,12 +12,6 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsCast;
 use web_sys::CanvasRenderingContext2d;
 
-// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-// allocator.
-#[cfg(feature = "wee_alloc")]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-
 #[wasm_bindgen]
 extern "C" {
     fn alert(s: &str);
@@ -107,7 +101,7 @@ impl Universum {
     }
 
     fn random(&mut self, high: i32) -> i32 {
-        self.rng.gen_range(0, high)
+        self.rng.gen_range(0..high)
     }
 
     /// Add default objects to scene
@@ -122,7 +116,7 @@ impl Universum {
 
         // clouds
         for _ in 0..10 {
-            let i = self.rng.gen_range(15, 40);
+            let i = self.rng.gen_range(15..40);
             let cloud_color = self.random(256) as u8;
             let z = self.random(5);
             let nscene = self.create_cloud(-(i << 3), 30, i, i, LIGHT_GRAY, cloud_color, 32766 - z);

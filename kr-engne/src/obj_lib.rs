@@ -260,7 +260,7 @@ impl Universum {
             dy: 64,
             phase: 0,
             old_time: Self::now(),
-            ph_time: vec![self.rng.gen_range(250.0, 500.0)],
+            ph_time: vec![self.rng.gen_range(250.0..500.0)],
             set_phase: Self::set_phase_ovca,
             drawme: Self::drawme_ovca,
             inme: None,
