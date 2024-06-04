@@ -30,7 +30,7 @@ jobs:
       run: npm run build
       working-directory: ./kr-engne/www
     - name: Deploy dist to Github Pages
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: JamesIves/github-pages-deploy-action@v4
       if: ${{ github.ref == 'refs/heads/master' }}
       with:
         branch: master
