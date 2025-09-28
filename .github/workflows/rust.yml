@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master ]
 
-permissions: 
+permissions:
   contents: write
 env:
   CARGO_TERM_COLOR: always
@@ -21,7 +21,7 @@ jobs:
     - uses: jetli/wasm-pack-action@v0.4.0
       with:
         # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
-        version: 'v0.10.0'
+        version: 'v0.13.1'
     - name: Build wasm-pack
       run: wasm-pack build
       working-directory: ./kr-engne
