@@ -22,9 +22,6 @@ jobs:
       with:
         # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
         version: 'v0.13.1'
-    - name: Build wasm-pack
-      run: wasm-pack build
-      working-directory: ./kr-engne
     - name: Install node packages
       run: npm install
       working-directory: ./kr-engne/www
