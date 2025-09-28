@@ -1,5 +1,7 @@
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const path = require('path');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+const WasmPackPlugin = require("@wasm-tool/wasm-pack-plugin");
 
 module.exports = {
   entry: "./bootstrap.js",
@@ -7,15 +9,16 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     filename: "bootstrap.js",
   },
-  mode: "development",
   plugins: [
-    new CopyWebpackPlugin({
-      patterns: [{
-        from: 'index.html'
-      }]
-    })
+    new HtmlWebpackPlugin({
+      template: "./index.html",
+    }),
+    new WasmPackPlugin({
+      crateDirectory: __dirname,
+    }),
   ],
+  mode: "development",
   experiments: {
-    asyncWebAssembly: true
-  }
+    asyncWebAssembly: true,
+  },
 };
