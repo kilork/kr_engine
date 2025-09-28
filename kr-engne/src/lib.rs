@@ -53,7 +53,7 @@ pub struct Universum {
 
 #[wasm_bindgen]
 impl Universum {
-    pub fn new(width: u32, height: u32) -> Self {
+    pub fn create(width: u32, height: u32) -> Self {
         utils::set_panic_hook();
         let document = web_sys::window().unwrap().document().unwrap();
         let canvas = document.get_element_by_id("canvas").unwrap();

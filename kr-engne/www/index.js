@@ -6,7 +6,7 @@ const ctx = canvas.getContext('2d');
 ctx.webkitImageSmoothingEnabled = false;
 ctx.mozImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
-const universum = wasm.Universum.new(640, 480);
+const universum = wasm.Universum.create(640, 480);
 
 universum.init_defaults();
 
